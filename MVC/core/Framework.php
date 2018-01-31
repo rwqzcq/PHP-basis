@@ -19,12 +19,50 @@ class FrameWork {
         // 控制器
         $controller_action = $request_array[0]; // Home/inedx
         $controller_action = explode('/', $controller_action); // 0 => Home 1 => index
-        // 解析出控制器 Home
-        $controller = $controller_action[0]; // Home
-        // 解析出方法 index
-        $action = $controller_action[1]; // index
+        // 解析出来控制器和方法
+        if(count($controller_action) >= 2) {
+            // 解析出控制器 Home
+            $controller = $controller_action[0]; // Home
+            // 解析出方法 index
+            $action = $controller_action[1]; // index            
+        } else {
+            // 加载默认控制器
+            require_once '/config/config.php';
+            $controller = $config['default_controller'];
+            $action = $config['default_action'];        
+        }       
         return ['controller' => $controller, 'action' => $action];
     }
+    /**
+     * 加载视图
+     */
+    public static function view($view_name, $data = []) {
+        require_once '/application/view/'.$view_name.'.html';
+    }
+
+}
+
+//助手函数
+function dump($data) {
+    echo '<pre>';
+    print_r($data);
+    echo '</pre>';
+}
+// 处理get请求
+function get($params = null) {
+    // 函数不传参但是确实有GET传值的时候返回已知的GET
+    if(!$params) {
+        return $_GET ? $_GET : false;
+    }
+    return isset($_GET[$parms]) ? $_GET[$parms] : null;
+}
+// 封装post
+function post($params = null) {
+    // 函数不传参但是确实有GET传值的时候返回已知的GET
+    if(!$params) {
+        return $_POST ? $_POST : false;
+    }
+    return isset($_POST[$params]) ? $_POST[$params] : null;
 }
 
 

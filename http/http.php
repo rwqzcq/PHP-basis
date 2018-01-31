@@ -3,16 +3,26 @@
  * 利用PHP发送get请求
  * 手写httpGET POST请求
  */
+class Http {
+    private $host = '';
+    private $header = '';
+    public function __construct($host) {
+        $this->host = $host;
+    }
+    public function get(){
+        ;
+    }
+}
 
 function get($host){
     $get_request = '';
-    $get_request .= "GET /index.php?s=/w0/Home/User/login/from/1.html HTTP/1.1\r\n";
-    $get_request .= "Accept-Charset: UTF-8\r\n";
+    $get_request .= "GET /session.php HTTP/1.1\r\n";
+  //  $get_request .= "Accept-Charset: UTF-8\r\n";
     $get_request .= "Host: $host\r\n";
     $get_request .= "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36\r\n";
     $get_request .= "Connection: keep-alive\r\n";
     $get_request .= "\r\n";
-    $f = fsockopen('ccnu.chunkao.cn', 80, $errno, $errstr, 30); // 打开一个socket连接
+    $f = fsockopen($host, 80, $errno, $errstr, 30); // 打开一个socket连接
     fwrite($f, $get_request); // 发送一个HTTP请求
     $result = '';
     while(!feof($f)) { // 读取发送回来的数据
@@ -39,10 +49,7 @@ function post($host, $uri) {
     $headers .= "Content-Type: application/x-www-form-urlencoded\r\n";
     $headers .= "Content-length: ".strlen($contents)."\r\n";
     $headers .= "\r\n";
-
-
     $post_request = $line . $headers . $contents;
-
     $f = fsockopen($host, 80, $errno, $errstr, 30); // 打开一个socket连接
     fwrite($f, $post_request); // 发送一个HTTP请求
     $result = '';
@@ -53,7 +60,7 @@ function post($host, $uri) {
     fclose($f);
 }
 $ccnu = 'ccnu.chunkao.cn';
-post($ccnu, '/index.php?s=/w0/Home/User/login/from/1.html');
+get('localhost');
 
 
 
